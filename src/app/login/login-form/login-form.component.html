@@ -1,20 +1,21 @@
-<form #emailForm="ngForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="emailForm" (ngSubmit)="onSubmit()">
   <label for="email">Email</label>
-  <div *ngIf="email.errors && (email.dirty || email.touched)"
-      class="alert-danger">
-      <div [hidden]="!email.errors.required">
-        Email is required
-      </div>
-      <div [hidden]="!email.errors.pattern">
-        Email must be in format you@something.com
-      </div>
+  <div *ngIf="formErrors.email" class="alert-danger">
+    {{ formErrors.email }}
   </div>
-  <input type="email" id="name" class="form-control"
-          name="email" [(ngModel)]="user.email" 
-          #email="ngModel" required
-          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+  <div *ngIf="emailForm.valid && !available && requested" class="alert-danger">
+    Email not found
+  </div>
+  <div *ngIf="emailForm.valid && available && requested" class="alert-success">
+    Email found!
+  </div>
+  <input type="email" id="email" class="form-control"
+          formControlName="email" required 
           >
   <button type="submit" class="btn" value="submit"
-          [disabled]="!emailForm.form.valid">
-  Submit</button>
+          [disabled]="!available">
+  Login</button>
 </form>
+<h2>
+  {{ users | json }}
+</h2>

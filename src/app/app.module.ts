@@ -1,24 +1,39 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { LoginFormComponent } from './login/login-form/login-form.component';
+import { ProfileComponent } from './profile/profile.component';
+
+import { AuthGuard } from './services/auth-guard.service';
+import { AuthService } from './services/auth.service';
+
+const routes: Routes = [
+  {path: '', component: LoginComponent},
+  {path: 'profile', canActivate: [AuthGuard], component: ProfileComponent}
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    ProfileComponent
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [
+    AuthGuard,
+    AuthService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

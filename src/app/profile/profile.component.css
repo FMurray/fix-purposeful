@@ -1,0 +1,19 @@
+.user-detail {
+  border: solid #000 2px
+}
+
+.profile-header {
+  border-bottom: solid #000 1px
+}
+
+.post {
+  border: solid #000 2px
+}
+
+.post-header {
+  border-bottom: solid #000 2px
+}
+
+.comment {
+  border-bottom: solid #000 1px
+}

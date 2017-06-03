@@ -9,11 +9,13 @@ import 'rxjs/add/operator/delay';
 export class AuthService {
 
   isLoggedIn: boolean = false;
+  // temp: number = 0;
 
   redirectUrl: string;
 
   login(): Observable<boolean> {
-    return Observable.of(true).delay(1000).do(val => this.isLoggedIn = true);
+    this.isLoggedIn = true;
+    return Observable.of(true).do(val => this.isLoggedIn = true);
   }
 
   logout(): void {

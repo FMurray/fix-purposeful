@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 
+import { Store } from '@ngrx/store';
+
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -10,11 +12,17 @@ import { User } from '../models/user';
 @Injectable()
 export class UserService {
   private usersUrl = 'https://jsonplaceholder.typicode.com/users';
+  private user: Observable<any>;
 
-  constructor (private http: Http) {}
+  constructor (
+    private http: Http,
+    private store: Store<any>
+  ) {
+    this.user = store.select('user');
+  }
 
   getUser(email: string): Observable<User> {
-    console.log('called getuser for ' + email)
+    //console.log('called getuser for ' + email)
     return this.http.get(this.usersUrl)
                     .map(res => this.resParse(res, email))
                     .catch(this.handleErr);
@@ -22,7 +30,10 @@ export class UserService {
 
   private resParse(res: Response, email: String) {
     const body = res.json();
-    const user = body.filter(user => user.email === email);
+    const user = body.filter(user => user.email === email)[0];
+    if (user) {
+      this.store.dispatch({type: 'UPDATE_USER', payload: user});
+    };
     return user || null;
   }
 

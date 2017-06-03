@@ -5,19 +5,19 @@ import { combineReducers } from '@ngrx/store';
 
 import * as fromUser from './user.reducer';
 import * as fromPosts from './posts.reducer';
-import * as fromComments from './comments.reducer';
+// import * as fromComments from './comments.reducer';
 
 
 export interface State {
   user: fromUser.State;
   posts: fromPosts.State;
-  comments: fromComments.State;
+  // comments: fromComments.State;
 }
 
 const reducers = {
-  user: fromUser.State,
-  posts: fromPosts.State,
-  comments: fromComments.State
+  user: fromUser.reducer,
+  posts: fromPosts.reducer,
+  // comments: fromComments.reducer
 };
 
 const productionReducer: ActionReducer<State> = combineReducers(reducers);
@@ -27,10 +27,10 @@ export function reducer(state: any, action: any) {
   return productionReducer(state, action);
 }
 
-// functions to select slices of the state
-export const getUserState = (state: State) => state.user;
+// // functions to select slices of the state
+// export const getUserState = (state: State) => state.user;
 
-export const getPostsState = (state: State) => state.posts;
-export const getPostEntities = createSelector(getPostsState, fromPosts.getEntities);
-export const getPostIds = createSelector(getPostsState, fromPosts.getId);
+// export const getPostsState = (state: State) => state.posts;
+// export const getPostEntities = createSelector(getPostsState, fromPosts.getEntities);
+// export const getPostIds = createSelector(getPostsState, fromPosts.getId);
 

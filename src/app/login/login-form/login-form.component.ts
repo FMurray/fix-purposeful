@@ -6,14 +6,13 @@ import { emailFormatValidator } from '../../shared/email-form.directive';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 
-import { User } from '../../models/user';
-
 import { Router } from '@angular/router';
 
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/debounceTime';
 
 import { Subject } from 'rxjs/Subject';
+
 
 @Component({
   selector: 'app-login-form',
@@ -27,7 +26,7 @@ export class LoginFormComponent implements OnInit {
   submitted = false;
   available = false;
   requested = false;
-  user = new User('');
+  email = '';
   errorMessage;
 
   formErrors = {
@@ -53,6 +52,7 @@ export class LoginFormComponent implements OnInit {
 
     this.authService.login().subscribe(() => {
       if (this.authService.isLoggedIn) {
+        //console.log('isLoggedIn from form component: ' + this.authService.isLoggedIn);
         // Get the redirect URL from our auth service
         // If no redirect has been set, use the default
         const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/profile';
@@ -64,7 +64,7 @@ export class LoginFormComponent implements OnInit {
 
   buildForm(): void {
     this.emailForm = this.fb.group({
-      'email': [this.user.email, [
+      'email': [this.email, [
         Validators.required,
         emailFormatValidator()
       ]]
@@ -88,12 +88,12 @@ export class LoginFormComponent implements OnInit {
                     .subscribe(
                       user => {
                         this.requested = true;
-                        if (user[0]) {
+                        if (user) {
                           this.available = true;
                         } else {
                           this.available = false;
                         }
-                        this.user = user;
+                        this.email = email;
                       },
                       error => this.errorMessage = <any>error
                     );

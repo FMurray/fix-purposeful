@@ -13,6 +13,7 @@ import 'rxjs/add/operator/debounceTime';
 
 import { Subject } from 'rxjs/Subject';
 
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-login-form',
@@ -44,22 +45,25 @@ export class LoginFormComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     public router: Router,
-    public authService: AuthService
+    public authService: AuthService,
+    public store: Store<any>
   ) {}
 
   onSubmit() {
     this.submitted = true;
 
-    this.authService.login().subscribe(() => {
-      if (this.authService.isLoggedIn) {
-        //console.log('isLoggedIn from form component: ' + this.authService.isLoggedIn);
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
-        const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/profile';
-        // Redirect the user
-        this.router.navigate([redirect]);
-      }
-    });
+    this.router.navigate(['/profile']);
+
+    // this.authService.login().subscribe(() => {
+    //   if (this.authService.isLoggedIn) {
+    //     //console.log('isLoggedIn from form component: ' + this.authService.isLoggedIn);
+    //     // Get the redirect URL from our auth service
+    //     // If no redirect has been set, use the default
+    //     const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : '/profile';
+    //     // Redirect the user
+    //     this.router.navigate([redirect]);
+    //   }
+    // });
   }
 
   buildForm(): void {
